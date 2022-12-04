@@ -209,8 +209,10 @@ def get_bert_output(model_bert, tokenizer, raw_words_batch, headers_batch, bert_
             last_encoder_layer, pooled_output, hidden_states = model_bert(
                 all_input_ids, token_type_ids=all_segment_ids, attention_mask=all_input_mask)
     else:
-        last_encoder_layer, pooled_output, hidden_states = model_bert(
-            all_input_ids, token_type_ids=all_segment_ids, attention_mask=all_input_mask)
+            transformer_model = model_bert(all_input_ids, token_type_ids=all_segment_ids, attention_mask=all_input_mask,output_hidden_states=True)
+            last_encoder_layer = transformer_model[0]
+            pooled_output = transformer_model[1]
+            hidden_states = transformer_model[2]
 
     embedding_output = hidden_states[0]
     all_encoder_layer = hidden_states[1:]
